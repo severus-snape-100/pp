@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Operation Valentine</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffe6eb;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      transition: background 0.3s ease;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-width: 450px;
+      position: relative;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #yesBtn {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    #noBtn {
+      background-color: #ddd;
+    }
+
+    .reaction {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      min-height: 40px;
+    }
+
+    img {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 12px;
+    }
+
+    .shake {
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-6px); }
+      100% { transform: translateX(0); }
+    }
+
+    .mission-failed {
+      background: black;
+      color: red;
+      font-size: 22px;
+      padding: 30px;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="card">
+  <h1 id="question">Will you be my Valentine? 💌</h1>
+  <button id="yesBtn">Yes 💖</button>
+  <button id="noBtn">No 🙄</button>
+  <div class="reaction" id="reaction"></div>
+  <img id="meme" src="" />
+</div>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const reaction = document.getElementById("reaction");
+  const meme = document.getElementById("meme");
+  const card = document.getElementById("card");
+
+  const reactions = [
+    "Are you serious right now?",
+    "You misclicked. Try again.",
+    "Ohhh so we're joking?",
+    "This is getting personal.",
+    "You chose violence today.",
+    "This is war now.",
+    "My heart just lagged.",
+    "This was NOT in production.",
+    "System malfunction detected.",
+    "MISSION FAILED."
+  ];
+
+  const memes = [
+  "memes/confused.gif",
+  "memes/suspised-girl.jpeg",
+  "memes/offended.jpeg",
+  "memes/dramatic.jpg",
+  "memes/betrayed.jpg",
+  "memes/angry.jpg",
+  "memes/this-is-war.jpeg",
+  "memes/existential-crisis.jpg",
+  "memes/system-crash.webp",
+  "memes/mission-failed.webp"
+];
+
+  let count = 0;
+
+  noBtn.addEventListener("click", () => {
+
+    card.classList.add("shake");
+    setTimeout(() => card.classList.remove("shake"), 300);
+
+    if (count < reactions.length - 1) {
+      reaction.innerText = reactions[count];
+      meme.src = memes[count];
+      document.body.style.background = `hsl(${Math.random()*360}, 70%, 85%)`;
+      count++;
+    } else {
+      // Mission Failed Screen
+      card.innerHTML = `
+        <div class="mission-failed">
+          🚨 MISSION FAILED 🚨<br><br>
+          The system cannot process rejection.<br>
+          Please restart and choose wisely.
+        </div>
+        <br>
+        <button onclick="location.reload()">Restart Mission</button>
+      `;
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
+
+    // Confetti burst
+    confetti({
+      particleCount: 200,
+      spread: 100,
+      origin: { y: 0.6 }
+    });
+
+    card.innerHTML = `
+      <h1>MISSION SUCCESS 💖</h1>
+      <div class="reaction">
+        Yayy proposal finally accepted.<br><br>
+        History has been made.
+      </div>
+      <img src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif">
+    `;
+  });
+</script>
+
+</body>
+</html>
